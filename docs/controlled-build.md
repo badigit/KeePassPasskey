@@ -98,6 +98,10 @@ log into this public repository.
 
 ## Manual acceptance
 
+`scripts/Prepare-ControlledTest.ps1` creates a separate portable KeePass, a synthetic KDBX
+and a Desktop shortcut. It can prepare the files while Windows installation awaits UAC;
+it copies only the plugin whose hash matches the signed build's provenance.
+
 Use only the isolated portable KeePass and synthetic KDBX. Enable the controlled provider
 in Windows passkey settings; approve Windows Hello yourself. Register a disposable user on
 a WebAuthn test site, save, authenticate, test cancellation and a locked database. Transfer

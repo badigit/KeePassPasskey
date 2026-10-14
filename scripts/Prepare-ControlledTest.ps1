@@ -12,10 +12,10 @@ $buildRoot = Join-Path $repoRoot 'build/controlled'
 $provenance = Get-Content -LiteralPath (Join-Path $buildRoot 'provenance.json') -Raw | ConvertFrom-Json
 if ($provenance.dirty -or -not $provenance.signed) { throw 'Use the final reviewed build for the test setup' }
 $installed = Get-AppxPackage -Name 'Badigit.KeePassPasskey'
-if (-not $installed) { throw 'Install the controlled MSIX first' }
-$sourcePlugin = Join-Path $installed.InstallLocation 'KeePassPasskeyPlugin/KeePassPasskey.dll'
+$sourceRoot = if ($installed) { $installed.InstallLocation } else { Join-Path $buildRoot 'stage' }
+$sourcePlugin = Join-Path $sourceRoot 'KeePassPasskeyPlugin/KeePassPasskey.dll'
 $pluginHash = ($provenance.files | Where-Object path -eq 'KeePassPasskeyPlugin\KeePassPasskey.dll').sha256
-if ((Get-FileHash -LiteralPath $sourcePlugin -Algorithm SHA256).Hash -ne $pluginHash) { throw 'Installed plugin hash differs from reviewed build' }
+if ((Get-FileHash -LiteralPath $sourcePlugin -Algorithm SHA256).Hash -ne $pluginHash) { throw 'Test plugin hash differs from reviewed build' }
 $testDb = Join-Path $EvaluationRoot 'Passkey-Test.kdbx'
 if (Test-Path -LiteralPath $testDb) { throw 'Test database exists; refusing to overwrite it' }
 $portable = Join-Path $EvaluationRoot 'portable'
