@@ -15,8 +15,13 @@ $cert = [Security.Cryptography.X509Certificates.X509Certificate2]::new($certific
 if ($cert.Subject -ne 'CN=badigit.KeePassPasskey' -or $cert.Thumbprint -ne $provenance.signingCertificate) { throw 'Certificate does not match provenance' }
 $signature = Get-AuthenticodeSignature -LiteralPath $package
 if (-not $signature.SignerCertificate -or $signature.SignerCertificate.Thumbprint -ne $cert.Thumbprint) { throw 'Unexpected package signer' }
-if (-not (Test-Path -LiteralPath "Cert:/CurrentUser/TrustedPeople/$($cert.Thumbprint)")) {
-    Import-Certificate -FilePath $certificatePath -CertStoreLocation Cert:/CurrentUser/TrustedPeople | Out-Null
+if (-not (Test-Path -LiteralPath "Cert:/LocalMachine/TrustedPeople/$($cert.Thumbprint)")) {
+    $trustScript = Join-Path $PSScriptRoot 'Trust-ControlledCertificate.ps1'
+    $powershell = Join-Path $env:WINDIR 'System32/WindowsPowerShell/v1.0/powershell.exe'
+    $trustArguments = '-NoProfile -File "' + $trustScript + '" -CertificatePath "' + $certificatePath + '" -ExpectedThumbprint ' + $cert.Thumbprint
+    $trustProcess = Start-Process -FilePath $powershell -ArgumentList $trustArguments -Verb RunAs -WindowStyle Hidden -PassThru
+    if (-not $trustProcess.WaitForExit(60000)) { throw 'Certificate trust step timed out' }
+    if ($trustProcess.ExitCode -ne 0 -or -not (Test-Path -LiteralPath "Cert:/LocalMachine/TrustedPeople/$($cert.Thumbprint)")) { throw 'Certificate trust was not granted; no package was removed' }
 }
 Add-AppxPackage -Path $package -ErrorAction Stop
 $installed = Get-AppxPackage -Name 'Badigit.KeePassPasskey'

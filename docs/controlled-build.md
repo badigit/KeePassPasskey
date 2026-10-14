@@ -75,7 +75,9 @@ Do not run the upstream Publish-Package or InstallMsix scripts for this fork.
 
 Create a local code-signing certificate with subject `CN=badigit.KeePassPasskey` and code-signing
 EKU; keep its private key outside Git. Install trusts only the public certificate required
-by Windows package deployment. Never disable Windows signature verification or anti-malware.
+by Windows package deployment, in `LocalMachine/TrustedPeople` (not the Root CA store).
+Its elevated helper checks the expected thumbprint, publisher and code-signing EKU.
+The UAC prompt must be approved by the user. Never disable Windows signature verification or anti-malware.
 
 ## Controlled updates and recovery
 
