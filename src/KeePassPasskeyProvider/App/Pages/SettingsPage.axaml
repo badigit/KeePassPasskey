@@ -130,7 +130,7 @@
 														</StackPanel>
 														<Grid ColumnDefinitions="*,Auto">
 																<TextBlock Text="Windows Hello (PIN, fingerprint, or face)" VerticalAlignment="Center" />
-																<ToggleSwitch Grid.Column="1" IsChecked="{Binding RegistrationWindowsHello}" MinHeight="0"
+																<ToggleSwitch Grid.Column="1" IsChecked="{Binding RegistrationWindowsHello}" IsEnabled="False" MinHeight="0"
 																		OnContent="On"
 																		OffContent="Off" />
 														</Grid>
@@ -162,7 +162,7 @@
 														</StackPanel>
 														<Grid ColumnDefinitions="*,Auto">
 																<TextBlock Text="Windows Hello (PIN, fingerprint, or face)" VerticalAlignment="Center" />
-																<ToggleSwitch Grid.Column="1" IsChecked="{Binding SignInWindowsHello}" MinHeight="0"
+																<ToggleSwitch Grid.Column="1" IsChecked="{Binding SignInWindowsHello}" IsEnabled="False" MinHeight="0"
 																		OnContent="On"
 																		OffContent="Off" />
 														</Grid>
@@ -207,10 +207,10 @@
 										</ui:FASettingsExpanderItem.Footer>
 								</ui:FASettingsExpanderItem>
 
-								<ui:FASettingsExpanderItem Content="Store resolved title placeholders"
-																				 Description="On: placeholders are resolved and the final text is saved in the title. Off: KeePass resolves them each time the entry is shown. {RP_NAME} is always resolved on save.">
+								<ui:FASettingsExpanderItem Content="Literal entry titles"
+																				 Description="Title references are not evaluated because they can expose protected fields. Only {RP_NAME} in the new-entry template is replaced.">
 										<ui:FASettingsExpanderItem.Footer>
-												<ToggleSwitch IsChecked="{Binding ResolveTitlePlaceholders}"
+												<ToggleSwitch IsChecked="{Binding ResolveTitlePlaceholders}" IsEnabled="False"
 																			OnContent="On"
 																			OffContent="Off"
 																			Margin="0 0 4 0" />
@@ -283,10 +283,10 @@
 										</ui:FASettingsExpanderItem.Footer>
 								</ui:FASettingsExpanderItem>
 
-								<ui:FASettingsExpanderItem Content="Check for plugin updates"
-																			 Description="When KeePass starts, offer to update the plugin if this app ships a newer one. Every update is confirmed in a dialog.">
+								<ui:FASettingsExpanderItem Content="Controlled updates"
+																			 Description="Updates require a reviewed source change and a new local build. Automatic plugin replacement is disabled.">
 									<ui:FASettingsExpanderItem.Footer>
-											<ToggleSwitch IsChecked="{Binding CheckForPluginUpdates}"
+											<ToggleSwitch IsChecked="{Binding CheckForPluginUpdates}" IsEnabled="False"
 																OnContent="On"
 																OffContent="Off"
 																Margin="0 0 4 0" />

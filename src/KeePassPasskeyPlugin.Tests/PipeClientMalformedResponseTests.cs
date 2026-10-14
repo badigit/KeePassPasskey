@@ -1,6 +1,7 @@
 ﻿// SPDX-FileCopyrightText: Copyright (C) 2026 Uwe Koegel
 // SPDX-License-Identifier: GPL-3.0-or-later
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Pipes;
 using System.Text;
@@ -51,6 +52,25 @@ public class PipeClientMalformedResponseTests
 				server.WaitForPipeDrain();
 			}
 		}, ct);
+	}
+
+	[Fact]
+	public async Task DiagnosticLoggerDoesNotReceiveRequestOrResponsePayload()
+	{
+		using (var cts = new CancellationTokenSource(TimeSpan.FromSeconds(10)))
+		{
+			var pipeName = NewPipeName();
+			var log = new List<string>();
+			var server = ServeOnce(pipeName, "{\"signature\":\"synthetic-signature-secret\"}", cts.Token);
+			var response = await Task.Run(() => new PipeClient(log.Add, pipeName).GetAssertion(
+				new GetAssertionRequest { RpId = "synthetic-private-site.invalid", ClientDataHash = "synthetic-hash-secret" }));
+			Assert.NotNull(response);
+			Assert.Equal("synthetic-signature-secret", response!.Signature);
+			var text = string.Join("\n", log);
+			Assert.Contains("get_assertion", text);
+			Assert.DoesNotContain("synthetic-", text);
+			await server;
+		}
 	}
 
 	[Fact]

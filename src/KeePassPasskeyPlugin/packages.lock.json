@@ -1,0 +1,59 @@
+{
+  "version": 1,
+  "dependencies": {
+    ".NETFramework,Version=v4.8": {
+      "BouncyCastle.Cryptography": {
+        "type": "Direct",
+        "requested": "[2.6.2, )",
+        "resolved": "2.6.2",
+        "contentHash": "7oWOcvnntmMKNzDLsdxAYqApt+AjpRpP2CShjMfIa3umZ42UQMvH0tl1qAliYPNYO6vTdcGMqnRrCPmsfzTI1w=="
+      },
+      "Microsoft.NETFramework.ReferenceAssemblies": {
+        "type": "Direct",
+        "requested": "[1.0.3, )",
+        "resolved": "1.0.3",
+        "contentHash": "vUc9Npcs14QsyOD01tnv/m8sQUnGTGOw1BCmKcv77LBJY7OxhJ+zJF7UD/sCL3lYNFuqmQEVlkfS4Quif6FyYg==",
+        "dependencies": {
+          "Microsoft.NETFramework.ReferenceAssemblies.net48": "1.0.3"
+        }
+      },
+      "Newtonsoft.Json": {
+        "type": "Direct",
+        "requested": "[13.0.4, )",
+        "resolved": "13.0.4",
+        "contentHash": "pdgNNMai3zv51W5aq268sujXUyx7SNdE2bj1wZcWjAQrKMFZV260lbqYop1d2GM67JI1huLRwxo9ZqnfF/lC6A=="
+      },
+      "Microsoft.NETFramework.ReferenceAssemblies.net48": {
+        "type": "Transitive",
+        "resolved": "1.0.3",
+        "contentHash": "zMk4D+9zyiEWByyQ7oPImPN/Jhpj166Ky0Nlla4eXlNL8hI/BtSJsgR8Inldd4NNpIAH3oh8yym0W2DrhXdSLQ=="
+      },
+      "PeterO.Cbor": {
+        "type": "Transitive",
+        "resolved": "4.5.5",
+        "contentHash": "9fMcLg2SUm9ri1j3gVPYxk6+Ev4l4wu93bYwFG1tvntg1Qy4m0rFDdxStG88XR/W4DggOtBXfPVkC3bLF10nqw==",
+        "dependencies": {
+          "PeterO.Numbers": "1.8.2",
+          "PeterO.URIUtility": "1.0.0"
+        }
+      },
+      "PeterO.Numbers": {
+        "type": "Transitive",
+        "resolved": "1.8.2",
+        "contentHash": "d+A5KLoWbwOTpvubPaGXLgCzANE00jXmsT+yneHwLe2OlobBBFLaIHyoDwmekuHM17z9hU++RF6mL+zZ2x69nA=="
+      },
+      "PeterO.URIUtility": {
+        "type": "Transitive",
+        "resolved": "1.0.0",
+        "contentHash": "fpRTBsYACMp7NvTECauYRomubWTC3vUNw4hMXdIedP8ctBGK6tea9HOJwE+qVzis6MZYkL3LIs8qeY3rc6Jdlw=="
+      },
+      "keepasspasskeyshared": {
+        "type": "Project",
+        "dependencies": {
+          "Newtonsoft.Json": "[13.0.4, )",
+          "PeterO.Cbor": "[4.5.5, )"
+        }
+      }
+    }
+  }
+}

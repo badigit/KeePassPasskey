@@ -6,7 +6,6 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Windows.Forms;
 using KeePass.Plugins;
-using KeePass.Util.Spr;
 using KeePassLib;
 using KeePassLib.Security;
 using KeePassLib.Utility;
@@ -216,7 +215,7 @@ internal sealed class PasskeyEntryStorage
 
 	// Sets the KPEX_PASSKEY_* fields (and BE/BS flags) on an entry. Shared by new-entry
 	// creation and save-to-existing-entry so both write identical passkey material.
-	private static void ApplyPasskeyFields(PwEntry entry, PasskeyCredential credential)
+	internal static void ApplyPasskeyFields(PwEntry entry, PasskeyCredential credential)
 	{
 		entry.Strings.Set(FieldCredentialId, new ProtectedString(true, credential.CredentialId));
 		entry.Strings.Set(FieldPrivateKey, new ProtectedString(true, credential.PrivateKeyPem));
@@ -247,47 +246,20 @@ internal sealed class PasskeyEntryStorage
 		}));
 	}
 
-	// Builds the title from the template. Placeholders are compiled first (when enabled), then the
-	// untrusted {RP_NAME} is spliced in last with its braces stripped so it can never act as one.
+	// Only the explicit site-name token is replaced. KeePass references remain inert text.
 	private static string BuildTitle(KeePassPasskeySettings settings, PasskeyCredential credential, PwEntry entry, PwDatabase db)
 	{
 		var template = settings.EntryTitleTemplate;
 		if (string.IsNullOrEmpty(template))
 			template = "{RP_NAME} (Passkey)";
 
-		if (settings.ResolveTitlePlaceholders)
-			template = CompileTitle(template, entry, db);
-
 		var rpName = !string.IsNullOrEmpty(credential.RpName) ? credential.RpName : credential.RelyingParty;
 		return ReplaceIgnoreCase(template, RpNameToken, NeutralizePlaceholders(rpName ?? ""));
-	}
-
-	// Compiles a title's placeholders against a sanitized clone, so field values resolve as inert
-	// text and cannot inject further placeholders (e.g. a username of "{S:..PRIVATE_KEY..}").
-	// Titles without placeholders skip the clone, keeping metadata listing cheap.
-	private static string CompileTitle(string text, PwEntry entry, PwDatabase db)
-	{
-		if (string.IsNullOrEmpty(text) || text.IndexOf('{') < 0) return text;
-		return SprEngine.Compile(text, new SprContext(CloneWithoutProtectedFields(entry), db, SprCompileFlags.Deref));
 	}
 
 	// Removes placeholder braces so the text cannot be parsed as a KeePass placeholder.
 	private static string NeutralizePlaceholders(string value) =>
 		value.Replace("{", "").Replace("}", "");
-
-	// Lightweight copy used only for title compilation: just the string fields SprEngine reads
-	// under Deref ({USERNAME}, {URL}, {S:...}; {REF:...} resolves via the database). Protected
-	// fields are blanked (never decrypted or shown) and the rest are brace-stripped so they
-	// resolve as inert text.
-	private static PwEntry CloneWithoutProtectedFields(PwEntry entry)
-	{
-		var copy = new PwEntry(false, false);
-		foreach (var kvp in entry.Strings)
-			copy.Strings.Set(kvp.Key, kvp.Value.IsProtected
-				? new ProtectedString(true, "")
-				: new ProtectedString(false, NeutralizePlaceholders(kvp.Value.ReadString())));
-		return copy;
-	}
 
 	private static string ReplaceIgnoreCase(string input, string token, string value)
 	{
@@ -549,7 +521,7 @@ internal sealed class PasskeyEntryStorage
 	}
 
 	// Returns only public metadata - no private key material. Used for listing credentials.
-	private static PasskeyCredential ExtractCredentialMetadata(PwEntry entry, PwDatabase db)
+	internal static PasskeyCredential ExtractCredentialMetadata(PwEntry entry, PwDatabase db)
 	{
 		bool be = ReadFlag(entry, FieldFlagBe, true);
 		return new PasskeyCredential
@@ -596,9 +568,8 @@ internal sealed class PasskeyEntryStorage
 
 	private static string ResolveTitle(PwEntry entry, PwDatabase db)
 	{
-		var raw = entry.Strings.ReadSafe(PwDefs.TitleField);
-		if (string.IsNullOrEmpty(raw)) return raw;
-		return CompileTitle(raw, entry, db);
+		// Metadata must never dereference passwords or private fields from another entry.
+		return entry.Strings.ReadSafe(PwDefs.TitleField);
 	}
 
 	private static bool IsSearchable(PwEntry entry)

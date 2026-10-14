@@ -59,12 +59,8 @@ internal static class ProviderPackageLocator
 	// Debug one). Keep in sync with ClientVerifier and PluginConstants.OfficialPackageFamilyNames.
 	private static readonly Channel[] KnownChannels =
 	{
-#if DEBUG
-		new Channel { PackageFamilyName = "KeePassPasskeyProvider_hdweypz22wfyt", DisplayName = "Dev", SelfUpdating = false },
-#else
-		new Channel { PackageFamilyName = "KeePassPasskeyProvider_rcm79ea08mqe4", DisplayName = "GitHub", SelfUpdating = false },
-		new Channel { PackageFamilyName = "51133UweKgel.KeePassPasskey_2xyhjw5z6d8g4", DisplayName = "Microsoft Store", SelfUpdating = true },
-#endif
+		new Channel { PackageFamilyName = KeePassPasskeyShared.ControlledBuild.PackageFamilyName,
+			DisplayName = "Controlled local build", SelfUpdating = false },
 	};
 
 	internal static bool IsOfficialPackageFamilyName(string packageFamilyName)

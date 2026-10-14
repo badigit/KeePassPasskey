@@ -38,7 +38,7 @@ internal sealed class WindowsHelloUserVerifier : IUserVerifier
 	{
 		var ptr = (WebAuthnPluginOperationRequest*)pRequest;
 		nint hwnd = ptr->hWnd != 0 ? ptr->hWnd : Win32Native.GetForegroundWindow();
-		Log.Info($"hWnd=0x{hwnd:X} username={username} displayHint={displayHint}");
+		Log.Info($"hWnd=0x{hwnd:X} user verification requested");
 
 		byte[]? uvKey = SignatureVerifier.GetUserVerificationPublicKey();
 		if (uvKey == null)

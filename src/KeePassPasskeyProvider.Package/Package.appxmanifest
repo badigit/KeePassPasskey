@@ -9,13 +9,13 @@
   IgnorableNamespaces="uap rescap desktop com uap3">
 
   <Identity
-    Name="KeePassPasskeyProvider"
-    Publisher="CN=KeePassPasskey"
+    Name="Badigit.KeePassPasskey"
+    Publisher="CN=badigit.KeePassPasskey"
     Version="0.0.0.0"
     ProcessorArchitecture="x64" />
 
   <Properties>
-    <DisplayName>KeePassPasskey</DisplayName>
+    <DisplayName>KeePassPasskey Controlled</DisplayName>
     <PublisherDisplayName>Uwe Kögel</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
@@ -31,7 +31,7 @@
   <Applications>
     <Application Id="KeePassPasskeyProvider" Executable="KeePassPasskeyProvider\KeePassPasskeyProvider.exe" EntryPoint="Windows.FullTrustApplication">
       <uap:VisualElements
-        DisplayName="KeePassPasskey"
+        DisplayName="KeePassPasskey Controlled"
         Description="Stores passkeys in KeePass"
         BackgroundColor="transparent"
         Square150x150Logo="Assets\Square150x150Logo.png"
@@ -42,7 +42,7 @@
         <com:Extension Category="windows.comServer">
           <com:ComServer>
             <com:ExeServer Executable="KeePassPasskeyProvider\KeePassPasskeyProvider.exe" Arguments="-ActivateAuthenticator" DisplayName="KeePassPasskey Provider">
-              <com:Class Id="4bff0a65-fdd6-4f97-ac44-7741ecaa5d7e" DisplayName="KeePassPasskey Provider" />
+              <com:Class Id="be5cbbd1-3aaf-45ba-8963-9cabd07e21b4" DisplayName="KeePassPasskey Controlled Provider" />
             </com:ExeServer>
           </com:ComServer>
         </com:Extension>
@@ -51,7 +51,7 @@
              Usage: KeePassPasskeyProvider.exe /register | /unregister | /status -->
         <uap3:Extension Category="windows.appExecutionAlias" Executable="KeePassPasskeyProvider\KeePassPasskeyProvider.exe" EntryPoint="Windows.FullTrustApplication">
           <uap3:AppExecutionAlias>
-            <desktop:ExecutionAlias Alias="KeePassPasskeyProvider.exe" />
+            <desktop:ExecutionAlias Alias="KeePassPasskeyControlled.exe" />
           </uap3:AppExecutionAlias>
         </uap3:Extension>
         <desktop:Extension Category="windows.startupTask" Executable="KeePassPasskeyProvider\KeePassPasskeyProvider.exe" EntryPoint="Windows.FullTrustApplication">

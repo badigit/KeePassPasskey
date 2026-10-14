@@ -3,6 +3,7 @@
 using System;
 using System.Runtime.InteropServices;
 using Microsoft.Win32.SafeHandles;
+using KeePassPasskeyShared;
 
 namespace KeePassPasskey.Ipc;
 
@@ -11,18 +12,8 @@ namespace KeePassPasskey.Ipc;
 /// </summary>
 internal static class ClientVerifier
 {
-	// Expected package family names for the MSIX-packaged provider.
-	// Debug accepts any package starting with the base name (self-signed dev certs).
-#if DEBUG
-	private static readonly string[] ExpectedPackageFamilyNames = { "KeePassPasskeyProvider" };
-#else
-	// Release accepts both official channels: GitHub self-signed and Microsoft Store.
-	private static readonly string[] ExpectedPackageFamilyNames =
-	{
-		"KeePassPasskeyProvider_rcm79ea08mqe4",       // GitHub channel
-		"51133UweKgel.KeePassPasskey_2xyhjw5z6d8g4",  // Store channel
-	};
-#endif
+	internal static bool IsAllowedPackage(string familyName) =>
+		string.Equals(familyName, ControlledBuild.PackageFamilyName, StringComparison.Ordinal);
 
 	/// <summary>
 	/// Verifies that the client connected to the pipe is the legitimate provider.
@@ -43,9 +34,8 @@ internal static class ClientVerifier
 			}
 
 			// 2. Verify the client is our MSIX-packaged provider by Package Family Name.
-			// It is a valid trust signal because running under it requires
-			// installing a package whose signing cert Subject matches that Publisher and is
-			// trusted on this machine, which a non-admin attacker cannot arrange.
+			// Windows package installation and the local certificate trust store remain
+			// part of this boundary; package identity is not a sandbox against account compromise.
 			string packageFamilyName = GetPackageFamilyName(clientPid);
 			if (packageFamilyName == null)
 			{
@@ -53,13 +43,7 @@ internal static class ClientVerifier
 				return false;
 			}
 
-#if DEBUG
-			bool matched = Array.Exists(ExpectedPackageFamilyNames,
-				n => packageFamilyName.StartsWith(n, StringComparison.OrdinalIgnoreCase));
-#else
-			bool matched = Array.Exists(ExpectedPackageFamilyNames,
-				n => packageFamilyName.Equals(n, StringComparison.OrdinalIgnoreCase));
-#endif
+			bool matched = IsAllowedPackage(packageFamilyName);
 			if (!matched)
 			{
 				reason = $"Unexpected package: {packageFamilyName}";

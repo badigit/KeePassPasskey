@@ -1,5 +1,7 @@
 ﻿// SPDX-FileCopyrightText: Copyright (C) 2026 Uwe Koegel
 // SPDX-License-Identifier: GPL-3.0-or-later
+using KeePassPasskeyShared;
+
 namespace KeePassPasskeyProvider.Authenticator;
 
 /// <summary>Distribution channel a build belongs to; selected at compile time.</summary>
@@ -15,43 +17,13 @@ internal enum DistributionChannel
 
 internal static class PluginConstants
 {
-#if DEBUG
-	/// <summary>KeePassPasskey Provider COM server CLSID (dev).</summary>
-	public static readonly Guid KeePassPasskeyProviderClsid = new("f048763a-d151-4fb0-b96e-315c543b2431");
-
-	/// <summary>KeePassPasskey Provider AAGUID (dev).</summary>
-	public static readonly Guid KeePassPasskeyProviderAaguid = new("56fc5580-c119-4fb8-8964-a1241f2da8ed");
-
-	/// <summary>Distribution channel of this build.</summary>
-	public const DistributionChannel Channel = DistributionChannel.Dev;
-#else
-	// Two Release channels: distinct CLSID (avoids COM class collision) selected by the STORE
-	// constant (/p:Store=true); shared AAGUID since it names the model, not the instance.
-#if STORE
-	/// <summary>KeePassPasskey Provider COM server CLSID (Microsoft Store channel).</summary>
-	public static readonly Guid KeePassPasskeyProviderClsid = new("281969eb-44a9-4577-954d-b47e72665442");
-
-	/// <summary>Distribution channel of this build.</summary>
-	public const DistributionChannel Channel = DistributionChannel.Store;
-#else
-	/// <summary>KeePassPasskey Provider COM server CLSID (self-signed GitHub channel).</summary>
-	public static readonly Guid KeePassPasskeyProviderClsid = new("4bff0a65-fdd6-4f97-ac44-7741ecaa5d7e");
-
-	/// <summary>Distribution channel of this build.</summary>
+	/// <summary>Separate COM identity; upstream packages cannot activate this fork.</summary>
+	public static readonly Guid KeePassPasskeyProviderClsid = new(ControlledBuild.ProviderClsid);
 	public const DistributionChannel Channel = DistributionChannel.GitHub;
-#endif
-
-	/// <summary>KeePassPasskey Provider AAGUID (shared across both Release channels).</summary>
-	public static readonly Guid KeePassPasskeyProviderAaguid = new("9addb28c-b46f-4402-808f-019651441ff3");
-#endif
+	public static readonly Guid KeePassPasskeyProviderAaguid = new("c98c97f9-5c19-4d16-9259-9e167a264f41");
 
 	/// <summary>Readable channel name, appended to copied version strings.</summary>
-	public static string ChannelDisplayName => Channel switch
-	{
-		DistributionChannel.Store => "Microsoft Store",
-		DistributionChannel.Dev => "Dev",
-		_ => "GitHub",
-	};
+	public static string ChannelDisplayName => "Controlled local build";
 
 	/// <summary>Provider log file name</summary>
 	public const string ProviderLogFileName = "Provider.log";
@@ -67,11 +39,7 @@ internal static class PluginConstants
 		return bytes;
 	}
 
-#if DEBUG
-	public const string PluginName = "KeePassPasskey Dev ";
-#else
-	public const string PluginName = "KeePassPasskey "; // trailing space is to work around Windows quirk where in some contexts the name is not properly displayed
-#endif
+	public const string PluginName = "KeePassPasskey Controlled ";
 
 	// Named kernel objects (mutexes + the tray "show" event) are namespaced by the MSIX
 	// Package Family Name so each installed package (Debug dev / GitHub / Store) gets its own
@@ -109,8 +77,7 @@ internal static class PluginConstants
 	/// <summary>PFNs of the official provider packages.</summary>
 	public static readonly string[] OfficialPackageFamilyNames =
 	{
-		"KeePassPasskeyProvider_rcm79ea08mqe4",       // GitHub channel
-		"51133UweKgel.KeePassPasskey_2xyhjw5z6d8g4",  // Store channel
+		ControlledBuild.PackageFamilyName,
 	};
 
 	public static bool IsOfficialPackageFamilyName(string familyName) =>

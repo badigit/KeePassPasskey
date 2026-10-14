@@ -6,11 +6,7 @@ namespace KeePassPasskeyShared.Ipc;
 
 public static class PipeConstants
 {
-#if DEBUG
-	public const string PipeName = "keepass-passkey-provider-dev";
-#else
-	public const string PipeName = "keepass-passkey-provider";
-#endif
+	public const string PipeName = ControlledBuild.PipeName;
 
 	/// <summary>
 	/// Protocol version gating the ping handshake, independent of the product version.

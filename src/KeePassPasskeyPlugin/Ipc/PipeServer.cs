@@ -239,7 +239,7 @@ internal sealed class PipeServer : IDisposable
 
 	// Self-relative security descriptor limiting the pipe to the current user and SYSTEM (no Everyone/anonymous)
 	// with a medium-integrity mandatory label so lower-integrity processes
-	// cannot connect. Null falls back to the default ACL.
+	// cannot connect. An ACL construction failure prevents server startup.
 	private static readonly byte[] _securityDescriptor = BuildSecurityDescriptor();
 
 	private static byte[] BuildSecurityDescriptor()
@@ -256,8 +256,7 @@ internal sealed class PipeServer : IDisposable
 		}
 		catch (Exception ex)
 		{
-			Log.Warn($"Could not build pipe security descriptor, using default ACL: {ex.Message}");
-			return null;
+			throw new InvalidOperationException("Could not secure the passkey pipe", ex);
 		}
 	}
 

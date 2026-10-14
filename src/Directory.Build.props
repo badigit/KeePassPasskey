@@ -3,13 +3,14 @@
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
 		<AnalysisMode>Recommended</AnalysisMode>
 		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+		<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<VersionPrefix>1.4.0</VersionPrefix>
-		<VersionSuffix></VersionSuffix>
-		<AssemblyVersion>1.4.0.0</AssemblyVersion>
-		<FileVersion>1.4.0.0</FileVersion>
+		<VersionPrefix>1.4.1</VersionPrefix>
+		<VersionSuffix>controlled.1</VersionSuffix>
+		<AssemblyVersion>1.4.1.0</AssemblyVersion>
+		<FileVersion>1.4.1.0</FileVersion>
 		<Company>Uwe Kögel</Company>
 		<Copyright>Copyright © 2026 Uwe Kögel</Copyright>
 	</PropertyGroup>

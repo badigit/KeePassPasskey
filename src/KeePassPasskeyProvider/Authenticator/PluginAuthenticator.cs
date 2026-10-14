@@ -248,7 +248,7 @@ public sealed class PluginAuthenticator : IPluginAuthenticator
 				// 4. User verification
 				var entry = LookupCredential(rpIdUtf8, allowList);
 				string uvUsername = entry?.UserName ?? string.Empty;
-				Log.Info($"credential lookup userName={uvUsername} title={entry?.Title ?? "(none)"}");
+				Log.Info($"credential lookup found={entry != null}");
 
 				int hrUv = UserVerifierDispatcher.VerifyForSignIn(
 					new SignInVerification((nint)pRequest, pRequest->transactionId, rpIdUtf8, uvUsername,

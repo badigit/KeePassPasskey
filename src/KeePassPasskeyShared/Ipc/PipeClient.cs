@@ -65,12 +65,12 @@ public sealed class PipeClient
 
 				string requestJson = JsonConvert.SerializeObject(request);
 				byte[] requestBytes = Encoding.UTF8.GetBytes(requestJson);
-				_logger?.Invoke($">> {requestJson}");
+				_logger?.Invoke($">> {request.Type} ({requestBytes.Length} bytes)");
 				WriteMessage(pipe, requestBytes);
 
 				byte[] responseBytes = ReadMessage(pipe);
 				string responseJson = Encoding.UTF8.GetString(responseBytes);
-				_logger?.Invoke($"<< {responseJson}");
+				_logger?.Invoke($"<< {request.Type} ({responseBytes.Length} bytes)");
 				return JsonConvert.DeserializeObject<TResponse>(responseJson);
 			}
 		}

@@ -12,4 +12,8 @@ build/Debug/
 
 # NuGet
 packages/
+TestResults/
+*.pfx
+*.p12
+*.cer
 

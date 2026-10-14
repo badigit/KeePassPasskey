@@ -18,6 +18,9 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\KeePassPasskeyPlugin\KeePassPasskeyPlugin.csproj" />
+		<Reference Include="KeePass">
+			<HintPath>..\..\build\KeePass.exe</HintPath>
+		</Reference>
 	</ItemGroup>
 
 </Project>

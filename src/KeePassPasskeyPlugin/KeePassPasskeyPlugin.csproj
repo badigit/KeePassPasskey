@@ -43,6 +43,7 @@
 
 	<ItemGroup>
 		<EmbeddedResource Include="Resources\plugin-icon.png" />
+		<Compile Remove="Update\PluginUpdateChecker.cs" />
 	</ItemGroup>
 
 	<!-- A running KeePass locks the plugin DLLs this build copies into its plugins folder; close it

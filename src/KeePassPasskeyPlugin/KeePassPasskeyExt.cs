@@ -26,7 +26,6 @@ public sealed class KeePassPasskeyExt : Plugin
 	private PipeServer _pipeServer;
 	private PasskeySyncTrigger _syncTrigger;
 	private EntryMenuController _entryMenu;
-	private PluginUpdateChecker _updateChecker;
 
 	// Loaded once; MemoryStream kept open for GDI+ lifetime requirement.
 	private static readonly Image _smallIcon = LoadSmallIcon();
@@ -45,8 +44,6 @@ public sealed class KeePassPasskeyExt : Plugin
 	}
 
 	public override Image SmallIcon => _smallIcon;
-
-	public override string UpdateUrl => "https://keepasspasskey.github.io/version.txt";
 
 	public override bool Initialize(IPluginHost host)
 	{
@@ -88,7 +85,6 @@ public sealed class KeePassPasskeyExt : Plugin
 					"Another process is already using the passkey pipe name. Passkey operations are disabled until you close that process and restart KeePass.");
 			}
 
-			_updateChecker = new PluginUpdateChecker(_host, settingsStorage);
 		}
 		catch (Exception ex)
 		{
@@ -108,18 +104,13 @@ public sealed class KeePassPasskeyExt : Plugin
 
 	private ToolStripMenuItem BuildToolsMenuItem()
 	{
-		if (_updateChecker == null) return null;
+		if (_host == null) return null;
 
 		var settings = new ToolStripMenuItem("Passkey settings", KeePassIcons.Get("B16x16_Misc"));
 		settings.Click += (s, e) => OpenProviderSettings();
 
-		var update = new ToolStripMenuItem("Update plugin from installed app",
-			KeePassIcons.Get("B16x16_2UpArrow"));
-		update.Click += (s, e) => _updateChecker.Check(true);
-
-		var root = new ToolStripMenuItem("KeePassPasskey") { Image = _smallIcon };
+		var root = new ToolStripMenuItem("KeePassPasskey Controlled") { Image = _smallIcon };
 		root.DropDownItems.Add(settings);
-		root.DropDownItems.Add(update);
 		return root;
 	}
 
@@ -132,8 +123,6 @@ public sealed class KeePassPasskeyExt : Plugin
 
 	public override void Terminate()
 	{
-		_updateChecker?.Dispose();
-		_updateChecker = null;
 		_entryMenu?.Dispose();
 		_entryMenu = null;
 		_syncTrigger?.Dispose();

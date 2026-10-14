@@ -9,7 +9,7 @@ public static class PluginLogFile
 {
 	public static readonly string DirectoryPath = Path.Combine(
 		Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-		"KeePassPasskey");
+		"KeePassPasskey-Controlled");
 
 	public const string FileName = "Plugin.log";
 

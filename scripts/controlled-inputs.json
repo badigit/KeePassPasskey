@@ -1,0 +1,18 @@
+{
+  "sdk": {
+    "version": "10.0.402",
+    "url": "https://builds.dotnet.microsoft.com/dotnet/Sdk/10.0.402/dotnet-sdk-10.0.402-win-x64.zip",
+    "sha512": "ae4fd528cb7e9f6af6aaf7de36715a69f761f183744f1bb3025d19f5a92447090ec561410e46266c1d10a63781ed6f3de771760bc76c876d87daabc367b898cd"
+  },
+  "windowsSdk": {
+    "version": "10.0.26100.7705",
+    "url": "https://download.microsoft.com/download/f4b30f2a-4fc3-430e-9b03-c842b5f5f9f1/KIT_BUNDLE_WINDOWSSDK_MEDIACREATION/winsdksetup.exe",
+    "sha256": "6FA0FA27DB77A909F5ECB35183CB26A969A6775936780936FE239E4F9C66B458",
+    "makeappxSha256": "00FFF202B71C1266B8C3899701E42B5468EA153B2B33A0A47215FE27695F16D0",
+    "signtoolSha256": "431EE314C83988CACDA86606356FD321B75AE0093481B97E3B738E99C412F2A0"
+  },
+  "keePassReference": {
+    "version": "2.61.1.0",
+    "sha256": "04D29636C393F0C1FC99FF739295494BE3ADEFDED93271E44591E8E300225A5A"
+  }
+}

@@ -10,10 +10,20 @@ public class KeePassPasskeySettings
 	public static KeePassPasskeySettings Current { get; set; } = new KeePassPasskeySettings();
 
 	[JsonProperty("registrationVerification")]
-	public UserVerificationMode RegistrationVerification { get; set; } = UserVerificationMode.Both;
+	public UserVerificationMode RegistrationVerification
+	{
+		get => _registrationVerification | UserVerificationMode.WindowsHello;
+		set => _registrationVerification = value | UserVerificationMode.WindowsHello;
+	}
+	private UserVerificationMode _registrationVerification = UserVerificationMode.Both;
 
 	[JsonProperty("signInVerification")]
-	public UserVerificationMode SignInVerification { get; set; } = UserVerificationMode.Both;
+	public UserVerificationMode SignInVerification
+	{
+		get => _signInVerification | UserVerificationMode.WindowsHello;
+		set => _signInVerification = value | UserVerificationMode.WindowsHello;
+	}
+	private UserVerificationMode _signInVerification = UserVerificationMode.Both;
 
 	[JsonProperty("useLegacyNotificationPrompts")]
 	public bool UseLegacyNotificationPrompts { get; set; }
@@ -31,7 +41,7 @@ public class KeePassPasskeySettings
 	public string EntryTitleTemplate { get; set; } = "{RP_NAME} (Passkey)";
 
 	[JsonProperty("resolveTitlePlaceholders")]
-	public bool ResolveTitlePlaceholders { get; set; } = true;
+	public bool ResolveTitlePlaceholders { get => false; set { } }
 
 	[JsonProperty("newEntryGroupMode")]
 	[JsonConverter(typeof(StringEnumConverter))]
@@ -64,7 +74,7 @@ public class KeePassPasskeySettings
 	// Whether the plugin offers to update itself from the DLL bundled in the installed provider
 	// package. Only controls the check: every update is still confirmed in a dialog.
 	[JsonProperty("checkForPluginUpdates")]
-	public bool CheckForPluginUpdates { get; set; } = true;
+	public bool CheckForPluginUpdates { get => false; set { } }
 
 	[JsonProperty("newPasskeyBackupEligible")]
 	public bool NewPasskeyBackupEligible { get; set; } = true;

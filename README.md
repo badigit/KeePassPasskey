@@ -1,5 +1,10 @@
 # KeePassPasskey
 
+> **Controlled fork: badigit/KeePassPasskey.** Build both components from reviewed source;
+> install and update manually. Start with [controlled build and security notes](docs/controlled-build.md).
+> The Store installation and upstream publishing instructions below are retained as reference,
+> and must not be used to install this fork.
+
 [![GitHub](https://img.shields.io/badge/GitHub-yusei36%2FKeePassPasskey-black?logo=github&style=for-the-badge)](https://github.com/yusei36/KeePassPasskey) [![GitHub Release](https://img.shields.io/github/v/release/yusei36/KeePassPasskey?include_prereleases&style=for-the-badge)](https://github.com/yusei36/KeePassPasskey/releases/latest) [![GitHub Release Date](https://img.shields.io/github/release-date-pre/yusei36/KeePassPasskey?style=for-the-badge)](https://github.com/yusei36/KeePassPasskey/releases/latest) [<img src="https://get.microsoft.com/images/en-us%20dark.svg" width="120" alt="Get it from Microsoft Store">](https://apps.microsoft.com/detail/9nwnfhjpspgz?mode=direct)
 
 **[Installation](#installation)** | **[User Guide](docs/user-guide.md)** | **[FAQ & Troubleshooting](docs/troubleshooting-faq.md)**

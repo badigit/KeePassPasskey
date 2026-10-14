@@ -24,6 +24,6 @@ public static class ChannelIcon
 	{
 		DistributionChannel.Store => "Installed from the Microsoft Store",
 		DistributionChannel.Dev => "Development build",
-		_ => "GitHub release",
+		_ => "Reviewed local build; manual updates",
 	};
 }
