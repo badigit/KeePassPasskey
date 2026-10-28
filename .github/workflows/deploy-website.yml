@@ -9,9 +9,6 @@ run-name: >-
 # When changing build behaviour, keep both workflows and the action in sync.
 
 on:
-  push:
-    branches:
-      - master
   workflow_dispatch:
 
 jobs:
