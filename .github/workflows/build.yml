@@ -6,14 +6,16 @@ run-name: >-
   Build · ${{ github.head_ref || github.ref_name }} · ${{ github.event.head_commit.message || github.event.pull_request.title || github.event_name }}
 
 on:
+  push:
+  pull_request:
   workflow_dispatch:
     inputs:
       build_release:
-        description: Also build Release (unsigned)
+        description: 'Also build Release (unsigned)'
         type: boolean
         default: true
       build_store:
-        description: Also build Store MSIX (unsigned, for Partner Center)
+        description: 'Also build Store MSIX (unsigned, for Partner Center)'
         type: boolean
         default: true
 
